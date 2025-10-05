@@ -1,235 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catalyst Whitepaper | Universal NFT Utility & Governance</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      --violet: #8b5cf6;
-      --sky: #38bdf8;
-      --bg-dark: #0f172a;
-      --bg-card: #1e293b;
-      --text-light: #f1f5f9;
-      --burn: #ef4444;
-      --amber: #fbbf24;
-      --rd: #5a00ff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst Whitepaper | Universal Utility & Governance</title>
+    <!-- Using Inter font for a professional, readable look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --color-primary: #8b5cf6; /* Violet for primary highlights */
+            --color-secondary: #38bdf8; /* Sky Blue for accents */
+            --color-background: #0f172a; /* Slate 900 */
+            --color-card: #1e293b; /* Slate 800 */
+            --color-text: #f1f5f9; /* Slate 100 */
+            --color-warning: #fbbf24; /* Amber 400 */
+            --color-critical: #ef4444; /* Red 500 */
+            --color-burn: #dc2626; /* Red 600 */
+            --color-rd: #5a00ff; /* Deep Purple for R&D */
+            --font-body: 'Inter', sans-serif;
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 10% 20%, #0f172a 40%, #020617 100%);
-      color: var(--text-light);
-      line-height: 1.8;
-      scroll-behavior: smooth;
-    }
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text);
+            background-color: var(--color-background);
+            line-height: 1.7;
+        }
 
-    header {
-      background: linear-gradient(to right, rgba(139, 92, 246, 0.1), rgba(56, 189, 248, 0.05));
-      backdrop-filter: blur(10px);
-    }
+        .container-fluid {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
 
-    .whitepaper-card {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.85));
-      border: 1px solid rgba(139, 92, 246, 0.2);
-      border-radius: 1rem;
-      box-shadow: 0 0 40px rgba(139, 92, 246, 0.1);
-      backdrop-filter: blur(8px);
-      transition: all 0.3s ease;
-    }
+        /* Custom Card Styles */
+        .whitepaper-card {
+            background-color: var(--color-card);
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    .whitepaper-card:hover {
-      border-color: rgba(56, 189, 248, 0.4);
-      box-shadow: 0 0 60px rgba(56, 189, 248, 0.08);
-    }
+        /* Headers and Typography */
+        h2 {
+            font-weight: 700;
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
 
-    h1, h2, h3 {
-      scroll-margin-top: 100px;
-    }
+        h3 {
+            color: var(--color-secondary);
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
 
-    h2 {
-      font-weight: 800;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: var(--violet);
-      border-bottom: 2px solid rgba(139, 92, 246, 0.4);
-      padding-bottom: 0.4rem;
-    }
+        /* Immutable Fee Split Visual */
+        .fee-split-box {
+            background-color: #0c4a6e; /* Darker blue */
+            border: 2px solid var(--color-critical);
+        }
 
-    h3 {
-      color: var(--sky);
-      font-weight: 600;
-      margin-top: 1.25rem;
-      margin-bottom: 0.5rem;
-    }
+        .burn-pct { color: var(--color-burn); }
+        .treasury-pct { color: var(--color-secondary); }
+        .deployer-pct { color: var(--color-warning); }
 
-    .gradient-text {
-      background: linear-gradient(to right, #8b5cf6, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        /* DRS and Critical Warnings */
+        .drs-card {
+            border-left: 5px solid var(--color-primary);
+            background-color: #1e293b;
+        }
+        .warning-box {
+            background-color: #3f0000;
+            border-left: 4px solid var(--color-critical);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .code-snippet {
+            font-family: monospace;
+            background-color: #111827;
+            color: var(--color-warning);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
 
-    .fee-split-box {
-      background: rgba(12, 74, 110, 0.4);
-      border: 1px solid rgba(239, 68, 68, 0.5);
-      border-radius: 0.75rem;
-      backdrop-filter: blur(4px);
-    }
+        /* List Styling */
+        .list-disc-styled li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* R&D Mission Section Styling (used within the Conclusion section) */
+        .rd-mission-box {
+            background-color: #29243d; /* Darker purple tint */
+            border: 2px solid var(--color-rd);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
 
-    .burn-pct { color: var(--burn); }
-    .treasury-pct { color: var(--sky); }
-    .deployer-pct { color: var(--amber); }
+        .rd-mission-box strong {
+            color: var(--color-rd);
+        }
 
-    .warning-box {
-      background: rgba(63, 0, 0, 0.5);
-      border-left: 4px solid var(--burn);
-      border-radius: 0.5rem;
-      padding: 1rem;
-      margin-top: 1rem;
-    }
+        .rd-options {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
 
-    .rd-mission-box {
-      background: rgba(41, 36, 61, 0.8);
-      border: 1px solid var(--rd);
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-      box-shadow: 0 0 20px rgba(90, 0, 255, 0.2);
-    }
-
-    /* Smooth Fade Animation */
-    section {
-      animation: fadeIn 0.6s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Table of Contents Sticky */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(15, 23, 42, 0.9);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-    }
-
-    nav a {
-      transition: all 0.25s ease;
-    }
-
-    nav a:hover {
-      color: white;
-      transform: scale(1.05);
-    }
-
-    footer {
-      background: linear-gradient(to right, rgba(139, 92, 246, 0.1), rgba(56, 189, 248, 0.1));
-      border-top: 1px solid rgba(139, 92, 246, 0.2);
-    }
-  </style>
+        .rd-options div {
+            flex: 1;
+            padding: 10px;
+            border: 1px dashed #5a00ff60;
+            border-radius: 6px;
+            background-color: #1a1629;
+        }
+    </style>
 </head>
 <body class="p-6">
 
-  <!-- HEADER -->
-  <header class="text-center py-10 rounded-2xl shadow-xl mb-10">
-    <h1 class="text-6xl font-extrabold gradient-text tracking-tight mb-2">Catalyst Protocol</h1>
-    <p class="text-slate-400 text-lg">Universal Utility & Governance for All NFTs</p>
-  </header>
+    <header class="text-center pb-8 border-b border-slate-700 mb-8">
+        <h1 class="text-6xl font-extrabold text-white mb-2 tracking-tighter">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-sky-400">Catalyst</span> Whitepaper
+        </h1>
+        <p class="text-xl text-slate-400">Universal Utility & Governance for All NFTs</p>
+    </header>
 
-  <!-- TOC -->
-  <nav class="whitepaper-card p-4 mb-10">
-    <div class="flex flex-wrap justify-center gap-4 text-sm font-semibold text-sky-300">
-      <a href="#intro">1. Introduction</a>
-      <a href="#vision">2. Vision</a>
-      <a href="#mission">3. Mission</a>
-      <a href="#goals">4. Goals</a>
-      <a href="#philosophy">5. Philosophy</a>
-      <a href="#tokenomics">6. Tokenomics</a>
-      <a href="#tiers">7. Tiers</a>
-      <a href="#governance">8. Governance</a>
-      <a href="#drs">9. DRS</a>
-      <a href="#security">10. Security</a>
-      <a href="#roadmap">11. Roadmap</a>
-      <a href="#conclusion">12. Conclusion</a>
-      <a href="#appendix">13. Appendix</a>
-    </div>
-  </nav>
+    <main class="container-fluid space-y-8">
+        <!-- Table of Contents (TOC) - Responsive Nav -->
+        <nav class="whitepaper-card p-4 mb-8">
+            <h3 class="text-slate-200 text-xl mb-3 border-none p-0 m-0">Table of Contents</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 text-sm">
+                <a href="#intro" class="text-sky-300 hover:text-sky-100 transition duration-150">1. Introduction</a>
+                <a href="#vision" class="text-sky-300 hover:text-sky-100 transition duration-150">2. Vision</a>
+                <a href="#mission" class="text-sky-300 hover:text-sky-100 transition duration-150">3. Mission</a>
+                <a href="#goals" class="text-sky-300 hover:text-sky-100 transition duration-150">4. Goals</a>
+                <a href="#philosophy" class="text-sky-300 hover:text-sky-100 transition duration-150">5. Philosophy</a>
+                <a href="#tokenomics" class="text-violet-300 hover:text-violet-100 transition duration-150 font-bold">6. Tokenomics</a>
+                <a href="#tiers" class="text-sky-300 hover:text-sky-100 transition duration-150">7. Tiers</a>
+                <a href="#governance" class="text-sky-300 hover:text-sky-100 transition duration-150">8. Governance</a>
+                <a href="#drs" class="text-sky-300 hover:text-sky-100 transition duration-150">9. DRS</a>
+                <a href="#security" class="text-sky-300 hover:text-sky-100 transition duration-150">10. Security</a>
+                <a href="#roadmap" class="text-sky-300 hover:text-sky-100 transition duration-150">11. Roadmap</a>
+                <a href="#conclusion" class="text-sky-300 hover:text-sky-100 transition duration-150">12. Conclusion</a>
+                <a href="#appendix" class="text-sky-300 hover:text-sky-100 transition duration-150">13. Appendix</a>
+            </div>
+        </nav>
 
-  <!-- CONTENT -->
-  <main class="max-w-6xl mx-auto space-y-10">
+        <!-- 1. Introduction -->
+        <section id="intro" class="whitepaper-card p-6">
+            <h2>1. Introduction</h2>
+            <p>The NFT space has rapidly evolved, but it remains fragmented. Blue-chip collections dominate the spotlight, while thousands of smaller or abandoned projects struggle for relevance. Holders of failed or “junk” NFTs are left with no utility, no governance rights, and no pathway back into the ecosystem.</p>
+            <p class="mt-4 font-bold text-violet-400">Catalyst changes this.</p>
+            <p class="mt-4">We are the first NFT-neutral staking and governance protocol, designed to give universal utility to every ERC-721 token — whether blue-chip, indie, or abandoned.</p>
+            <p class="mt-4">Catalyst is not a marketplace, nor a speculative platform. Catalyst is an infrastructure layer: a deflationary staking protocol where all NFTs can earn, burn, and participate in governance — with safeguards that protect credibility and sustainability.</p>
+            <p class="mt-4 font-bold text-violet-400">👉 And uniquely, Catalyst is the first protocol to implement a Decentralized Recovery System (DRS) — a guardian-based 7-of-5 council model that protects deployer and admin keys from compromise, ensuring the highest level of security in the NFT ecosystem.</p>
+        </section>
 
-    <!-- Introduction -->
-    <section id="intro" class="whitepaper-card p-8">
-      <h2>1. Introduction</h2>
-      <p>The NFT space has evolved rapidly but remains fragmented. Blue-chip collections dominate, while thousands of smaller projects lack relevance or utility. Holders of failed NFTs are left with no purpose or governance rights.</p>
-      <p class="mt-4 font-semibold text-violet-400">Catalyst changes this.</p>
-      <p class="mt-4">Catalyst is the first NFT-neutral staking and governance protocol — giving every ERC-721 token, blue-chip or abandoned, a new path to utility and governance.</p>
-      <p class="mt-4 italic text-sky-300">It introduces a Decentralized Recovery System (DRS), ensuring that even the deployer and admin keys are secured through a 7-of-5 guardian council model — setting a new security standard in NFT infrastructure.</p>
-    </section>
+        <!-- 2. Vision -->
+        <section id="vision" class="whitepaper-card p-6">
+            <h2>2. Vision</h2>
+            <blockquote class="border-l-4 border-sky-400 pl-4 italic text-slate-300">
+                "To become the universal utility layer of the NFT ecosystem, where every NFT has value and every collection can contribute to shaping the future of decentralized communities."
+            </blockquote>
+            <p class="mt-3">And to pioneer security in DeFi/NFT protocols by introducing the first Decentralized Recovery System (DRS), ensuring resilience against admin compromise.</p>
+        </section>
 
-    <!-- Vision -->
-    <section id="vision" class="whitepaper-card p-8">
-      <h2>2. Vision</h2>
-      <blockquote class="border-l-4 border-sky-400 pl-4 italic text-slate-300">
-        “To become the universal utility layer of the NFT ecosystem — where every NFT has value, and every collection helps shape the decentralized future.”
-      </blockquote>
-    </section>
+        <!-- 3. Mission -->
+        <section id="mission" class="whitepaper-card p-6">
+            <h2>3. Mission</h2>
+            <ul class="list-disc-styled list-inside text-sm">
+                <li><strong>Empower Holders</strong> – Give all NFT owners, from BAYC whales to rug-pull survivors, a way to extract real value.</li>
+                <li><strong>Balance Incentives</strong> – Reward credible collections while still including unverified ones through proof-of-burn mechanics.</li>
+                <li><strong>Deflationary Tokenomics</strong> – Make CATA a sustainable asset through continuous burn mechanics and dynamic fees.</li>
+                <li><strong>Governance for All</strong> – Create a governance model that scales with the ecosystem, balancing top collections with small contributors.</li>
+                <li><strong>Bridge Legitimacy</strong> – Increase blue-chip acceptance by filtering junk responsibly without excluding survivors.</li>
+                <li><strong>Secure by Design</strong> – Establish a new security standard with DRS (7:5 guardian council), protecting deployer and admin keys from compromise.</li>
+            </ul>
+        </section>
 
-    <!-- Mission -->
-    <section id="mission" class="whitepaper-card p-8">
-      <h2>3. Mission</h2>
-      <ul class="list-disc list-inside text-sm space-y-2">
-        <li>Empower NFT holders — from BAYC whales to rug-pull survivors — with real value extraction.</li>
-        <li>Reward credible collections, but include unverified ones through proof-of-burn mechanics.</li>
-        <li>Ensure sustainability with deflationary tokenomics and immutable fee distribution.</li>
-        <li>Guarantee fairness through decentralized, burn-weighted governance.</li>
-      </ul>
-    </section>
+        <!-- 4. Goals -->
+        <section id="goals" class="whitepaper-card p-6">
+            <h2>4. Goals</h2>
+            <ul class="list-disc-styled list-inside text-sm">
+                <li>Establish CATA as the core staking & governance token of NFT utility.</li>
+                <li>Build a dual-tier ecosystem:
+                    <ul class="ml-4 list-disc list-inside">
+                        <li>Verified collections with full privileges.</li>
+                        <li>Unverified collections that must burn and prove commitment before upgrading.</li>
+                    </ul>
+                </li>
+                <li>Maintain a deflationary balance between minted rewards and burned CATA.</li>
+                <li>Provide a transparent, community-driven governance model based on burns and stake-age.</li>
+                <li>Position Catalyst as the infrastructure standard for NFT staking, governance, and protocol neutrality.</li>
+            </ul>
+        </section>
+        
+        <!-- 5. Core Philosophy -->
+        <section id="philosophy" class="whitepaper-card p-6">
+            <h2>5. Core Philosophy</h2>
+            <ol class="list-decimal list-inside text-sm space-y-2">
+                <li><strong>NFT-Neutral Utility</strong> – Every ERC-721 is unique on-chain, even if marketplaces call it “junk”.</li>
+                <li><strong>Proof-of-Burn Legitimacy</strong> – Junk collections must burn extra CATA to join, aligning incentives and discouraging spam.</li>
+                <li><strong>Adaptive Governance</strong> – Voting eligibility is dynamic, scaling with ecosystem growth.</li>
+                <li><strong>Transparency & Fairness</strong> – Upgrades from Unverified → Verified require meeting objective on-chain conditions and governance approval.</li>
+                <li><strong>Deflationary Economics</strong> – Registration fees, harvest burns, unstake burns, and bonus programs continuously destroy supply.</li>
+                <li><strong>Guardian Security</strong> – Catalyst is the first protocol to integrate a Decentralized Recovery System (DRS), with dual 7:5 guardian councils ensuring recovery without centralization.</li>
+            </ol>
+        </section>
+        
+        <!-- 6. Tokenomics (CATA) -->
+        <section id="tokenomics" class="whitepaper-card p-6 bg-slate-900 border-t-4 border-violet-500">
+            <h2 class="text-violet-400 border-violet-400">6. Tokenomics (CATA)</h2>
+            <p>Token Name: Catalyst (CATA). Type: ERC-20 Utility & Governance Token.</p>
 
-    <!-- Tokenomics -->
-    <section id="tokenomics" class="whitepaper-card p-8 border-t-4 border-violet-500">
-      <h2 class="text-violet-400">6. Tokenomics (CATA)</h2>
-      <p>CATA is a deflationary ERC-20 utility and governance token with a hard cap of 1,000,000,000 tokens.</p>
-      <div class="fee-split-box p-6 mt-6 grid grid-cols-3 text-center text-lg font-extrabold">
-        <div class="burn-pct">90% Burned</div>
-        <div class="treasury-pct">9% Treasury</div>
-        <div class="deployer-pct">1% Deployer</div>
-      </div>
-      <p class="text-xs italic text-slate-400 mt-2 text-center">Immutable across all protocol actions — cannot be changed by governance.</p>
-    </section>
+            <h3 class="text-sky-400">Deflationary / Emission Mechanics</h3>
+            <ul class="list-disc-styled list-inside text-sm">
+                <li><strong>Deflationary</strong>: Harvest burn fee (dynamic %), Unstake burn fee, Collection registration fees, Voluntary burns.</li>
+                <li><strong>Emission</strong>: Staking NFTs mints new CATA. Base reward rate dynamically adjusts with participation.</li>
+            </ul>
 
-    <!-- DRS -->
-    <section id="drs" class="whitepaper-card p-8">
-      <h2 class="text-violet-400">9. Guardian Council Security (DRS)</h2>
-      <p>The Batch Guardian Council (BGC) model uses two 7-member batches: Active and Standby. It ensures key recovery without centralization.</p>
-      <ul class="list-disc list-inside text-sm mt-3 space-y-2">
-        <li>5-of-7 approvals → Valid Recovery</li>
-        <li>6-of-7 approvals → 48h veto window</li>
-        <li>7-of-7 approvals → Auto-lock, Standby activation</li>
-      </ul>
-      <div class="warning-box mt-4">
-        <p><strong>Execution Timelock:</strong> Once 5-of-7 approvals are met, a mandatory 4-hour delay prevents immediate execution — ensuring community oversight.</p>
-      </div>
-    </section>
+            <h3 class="text-sky-400 mt-6">Hard-Coded Supply and Staking Caps (Aligned)</h3>
+            <ul class="list-disc-styled list-inside text-sm">
+                <li>CATA token supply is **hard-capped at 1,000,000,000**. Only the Staking contract can mint new supply.</li>
+                <li>Global staking capacity capped at **500,000,000 NFTs**: 375M Term stakes / 125M Permanent stakes.</li>
+                <li>**Per-Collection Cap**: A hard cap of **20,000 staked NFTs** is enforced per registered collection contract to prevent single-collection dominance.</li>
+            </ul>
 
-    <!-- Conclusion -->
-    <section id="conclusion" class="whitepaper-card p-8 bg-slate-800">
-      <h2 class="text-sky-400">12. Conclusion</h2>
-      <p class="text-slate-300 italic">Catalyst is both a universal NFT utility layer and a guardian-secured protocol, driven by R&D and community governance.</p>
-      <div class="rd-mission-box mt-6">
-        <h3 class="text-violet-400 text-xl mb-2">📌 R&D-First Mission</h3>
-        <p class="text-sm">Catalyst begins as a research initiative testing the boundaries of NFT staking, governance, and decentralized recovery — building toward a sustainable ecosystem that rewards contribution and innovation.</p>
-      </div>
-    </section>
+            <h3 class="text-critical-text mt-6">Immutable Fee Distribution (CRITICAL)</h3>
+            <div class="fee-split-box p-4 rounded-lg mt-4 flex justify-around items-center text-center text-xl font-extrabold shadow-2xl">
+                <div class="burn-pct">90% Burned</div>
+                <div class="treasury-pct">9% Treasury</div>
+                <div class="deployer-pct">1% Owner (Deployer)</div>
+            </div>
+            <p class="text-sm text-slate-400 italic mt-2 text-center">This split applies to ALL protocol fees (registration, unstake, harvest, forfeits) and **cannot be modified by governance**.</p>
+            
+            <h3 class="text-sky-400 mt-6">Top 1% Burner Bonus</h3>
+            <p class="text-sm">Every cycle (~weekly), the top 1% of wallets ranked by burned CATA receive a bonus from the Treasury, capped (default: 5% of Treasury per cycle).</p>
+        </section>
 
-  </main>
+        <!-- 7. Collection Tiers -->
+        <section id="tiers" class="whitepaper-card p-6">
+            <h2>7. Collection Tiers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Verified -->
+                <div class="p-4 bg-green-900/50 border border-green-700 rounded-lg">
+                    <h3 class="text-green-300 mt-0">Verified (Standard)</h3>
+                    <p class="text-sm">Normal registration & staking fees. Full privileges. **Custodial staking** inside the protocol.</p>
+                </div>
+                <!-- Unverified -->
+                <div class="p-4 bg-yellow-900/50 border border-yellow-700 rounded-lg">
+                    <h3 class="text-yellow-300 mt-0">Unverified (Junk / Rug Survivors)</h3>
+                    <p class="text-sm">Requires registration + **surcharge escrow**. Reduced governance rights until upgraded. Forfeited escrow follows the **90/9/1 split**.</p>
+                </div>
+                <!-- Blue-Chip -->
+                <div class="p-4 bg-blue-900/50 border border-blue-700 rounded-lg">
+                    <h3 class="text-blue-300 mt-0">Blue-Chip (Curated / Trusted)</h3>
+                    <p class="text-sm">**Non-custodial model**: Wallets register directly with a one-time fee for reward access, avoiding custody risk. Alternatively, they can stake via the Verified path.</p>
+                </div>
+            </div>
+        </section>
 
-  <footer class="text-center py-6 mt-10 text-slate-500 text-sm">
-    &copy; Catalyst Protocol — Universal NFT Utility & Governance.
-  </footer>
+        <!-- 8. Governance Model -->
+        <section id="governance" class="whitepaper-card p-6">
+            <h2>8. Governance Model</h2>
+            <h3 class="text-sky-400">Burn-Weighted Collection Governance (BWCG)</h3>
+            <ul class="list-disc-styled list-inside text-sm">
+                <li>Voting weight scaled by **staking contributions & burn activity**.</li>
+                <li>Per-collection vote cap prevents monopolization.</li>
+                <li>Stake-age requirement prevents flash-stake manipulation.</li>
+                <li>Blue-Chip wallets gain eligibility via one-time fee or staking.</li>
+            </ul>
+            <div class="warning-box bg-red-900/70">
+                <p>⚠️ <strong>CRITICAL NOTE on Immutability:</strong> The <strong>90/9/1 fee split cannot be changed</strong> by any governance action, ensuring permanent deflationary economics.</p>
+            </div>
+            <h3 class="mt-6">Proposal Types Governed</h3>
+            <p class="text-sm text-slate-300">Governance controls base reward adjustments, fee updates, voting parameter changes, collection tier upgrades, **Guardian Council reseeding**, DAO upgrades, and Council lock clearing.</p>
+        </section>
+
+        <!-- 9. Guardian Council Security System (DRS) -->
+        <section id="drs" class="whitepaper-card p-6 drs-card">
+            <h2 class="text-violet-400">9. Guardian Council Security System (DRS)</h2>
+            <p>Catalyst secures its upgradeable contracts using the **Batch Guardian Council (BGC)** — a two-batch guardian model (Active/Standby) with 7 guardians in each batch.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div>
+                    <h3>Recovery Thresholds (7 Guardians)</h3>
+                    <ul class="list-disc-styled list-inside text-sm space-y-2">
+                        <li><strong class="text-green-400">5 of 7 approvals</strong> &rarr; Recovery valid.</li>
+                        <li><strong class="text-amber-400">6 of 7 approvals</strong> &rarr; Raises a Warning and grants the Last Honest Guardian a **48h veto**.</li>
+                        <li><strong class="text-red-400">7 of 7 approvals</strong> &rarr; Auto-Lock triggered, **Standby batch activated immediately**.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Execution Timelock (CRITICAL ALIGNMENT)</h3>
+                    <p class="warning-box bg-slate-800 border-sky-400">
+                        Once a recovery proposal achieves the **5-of-7 threshold**, there is a mandatory, non-waivable **4-hour timelock** (<span class="code-snippet">EXECUTION_TIMELOCK</span>) before the proposed action can be executed.
+                    </p>
+                    <p class="text-sm text-slate-400 mt-3">This delay provides a final chance for monitoring and intervention before the proposed change is executed.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Security, Scalability, Sustainability -->
+        <section id="security" class="whitepaper-card p-6">
+            <h2>10. Security, Scalability, Sustainability</h2>
+            
+            <h3 class="text-red-400">Security Hardening</h3>
+            <div class="warning-box bg-red-900/50 border-white">
+                <p class="font-bold">Role Management Hardening (Immutable on-chain):</p>
+                <p class="text-sm mt-2">The generic OpenZeppelin role management functions (<span class="code-snippet">grantRole()</span>, <span class="code-snippet">revokeRole()</span>, and <span class="code-snippet">renounceRole()</span>) are **disabled in all contracts and hard-coded to revert**. All role changes must occur via the governance proposal system or the Guardian Council recovery mechanism.</p>
+            </div>
+            <h3 class="mt-6">Scalability & Sustainability</h3>
+            <ul class="list-disc-styled list-inside text-sm">
+                <li>**Scalability**: Capped at **500,000,000 NFTs** globally; **20,000 NFTs** per collection.</li>
+                <li>**Sustainability**: Continuous burn mechanics, capped treasury, and the immutable **90/9/1 fee split**.</li>
+            </ul>
+        </section>
+
+        <!-- 11. Roadmap -->
+        <section id="roadmap" class="whitepaper-card p-6">
+            <h2>11. Roadmap</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
+                <div class="p-3 border-b-2 border-violet-400"><p><strong>Phase 1:</strong> Core contract deployment (staking, burning, governance).</p></div>
+                <div class="p-3 border-b-2 border-violet-400"><p><strong>Phase 2:</strong> Frontend UI & community dashboard.</p></div>
+                <div class="p-3 border-b-2 border-violet-400"><p><strong>Phase 3:</strong> Governance bootstrapping; first upgrade votes.</p></div>
+                <div class="p-3 border-b-2 border-violet-400"><p><strong>Phase 4:</strong> Strategic integrations with NFT marketplaces & dApps.</p></div>
+                <div class="p-3 border-b-2 border-violet-400"><p><strong>Phase 5:</strong> Expansion of utility — cross-chain staking, DeFi integrations, NFT collateralization.</p></div>
+            </div>
+        </section>
+
+        <!-- 12. Conclusion (Merges R&D Mission) -->
+        <section id="conclusion" class="whitepaper-card p-6 bg-slate-800">
+            <h2 class="text-sky-400 border-sky-400">12. Conclusion</h2>
+            <p class="text-lg italic text-slate-300">Catalyst is both a universal NFT utility layer and a guardian-secured protocol. It delivers:</p>
+            <ul class="list-disc list-inside text-sm font-semibold mt-4">
+                <li>NFTs gain value: even junk NFTs.</li>
+                <li>Governance is fair: burn-weighted and capped.</li>
+                <li>Tokenomics are deflationary: immutable 90/9/1 split.</li>
+                <li>Security is advanced: Guardian Councils with compromise detection and last-resort protection.</li>
+            </ul>
+
+            <!-- R&D-First Mission Box -->
+            <div class="rd-mission-box mt-6">
+                <h3 class="text-violet-400 border-none p-0 m-0 text-xl">📌 R&D-First Mission</h3>
+                <p class="mt-2 text-sm">Catalyst begins as a **research & development project**, created to stress-test the security, scalability, and sustainability of NFT-integrated protocols. Its primary goal is to help improve the space by experimenting with staking, governance, and decentralized recovery.</p>
+                <p class="mt-3 text-sm">Catalyst is not launched as a commercial product — but it is community-governed, meaning the future is open:</p>
+                
+                <div class="rd-options">
+                    <div>
+                        <p class="text-sm font-semibold">Path A: Pure R&D</p>
+                        <p class="text-xs">The community may choose to keep Catalyst as a pure R&D initiative.</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold">Path B: Protocol Evolution</p>
+                        <p class="text-xs">Or evolve it into a sustainable protocol that balances ecosystem growth with incentives for contributors and maintainers.</p>
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-400 mt-2 italic">An immutable 1% deployer fee exists to ensure founder sustainability; all other expansion or profit models are fully subject to governance.</p>
+                <p class="text-xs text-slate-400 mt-1 italic font-semibold">Catalyst = NFT-neutral utility + sustainable deflation + decentralized recovery.</p>
+            </div>
+        </section>
+
+        <!-- 13. Technical Appendix -->
+        <section id="appendix" class="whitepaper-card p-6">
+            <h2>13. Technical Appendix — Catalyst Smart Contract Architecture (Aligned with Current Contracts)</h2>
+            <p class="text-sm">Catalyst is deployed as a modular, upgradeable protocol using the UUPS proxy standard.</p>
+            
+            <h3 class="text-red-400 mt-6">Immutable Rule (Restated)</h3>
+            <p class="text-sm">All fees follow the **90% Burn / 9% Treasury / 1% Deployer** split, enforced at the contract level and **unchangeable** by governance.</p>
+
+            <h3 class="text-sky-400 mt-6">Core Contracts (UUPS Upgradeable)</h3>
+            <ul class="list-disc-styled list-inside text-sm space-y-2">
+                <li><span class="code-snippet">CataERC20Upgradeable.sol</span>: Max Supply: <strong>1,000,000,000 CATA</strong> (hard cap). Minting restricted to Staking contract.</li>
+                <li><span class="code-snippet">CatalystStakingUpgradeable.sol</span>: Custodial NFT staking. Global Cap: 500M NFTs. Per-Collection Cap: 20K NFTs.</li>
+                <li><span class="code-snippet">CatalystGovernanceUpgradeable.sol</span>: On-chain Burn-Weighted Collection Governance (BWCG). Governed by BGC.</li>
+                <li><span class="code-snippet">BatchGuardianCouncilUpgradeable.sol</span>: Dual-Batch Model. Recovery Threshold: 5-of-7. **Mandatory 4-hour Execution Timelock**.</li>
+            </ul>
+            
+            <h3 class="text-red-400 mt-6">Access Control Hardening</h3>
+            <p class="text-sm">The generic OpenZeppelin role functions (`grantRole()`, `revokeRole()`, and `renounceRole()`) are **overridden to revert** in all core contracts, ensuring all admin changes are auditable via the governance or recovery track.</p>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 mt-8 text-slate-500 text-sm border-t border-slate-700">
+        &copy; Catalyst Protocol. Universal Utility & Governance.
+    </footer>
+
 </body>
 </html>
