@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst Whitepaper | DApp Presentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Catalyst Protocol</h1>
+            <p>Universal Utility & Governance for All NFTs</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <nav class="toc">
+            <a href="#intro">1. Intro</a>
+            <a href="#tokenomics">2. Tokenomics</a>
+            <a href="#tiers">3. Collection Tiers</a>
+            <a href="#governance">4. Governance</a>
+            <a href="#security">5. Guardian Council (DRS)</a>
+        </nav>
+
+        <section id="intro" class="card">
+            <h2>1. The Infrastructure Layer</h2>
+            <div class="content-split">
+                <div class="vision">
+                    <h3>Vision</h3>
+                    <p class="quote">"To become the universal utility layer of the NFT ecosystem, where every NFT has value and every collection can contribute to shaping the future of decentralized communities."</p>
+                    <p>Catalyst provides deflationary staking, utility, and governance for **every ERC-721**—blue-chip, indie, or abandoned—solving the fragmentation problem.</p>
+                </div>
+                <div class="mission">
+                    <h3>Core Mission</h3>
+                    <ul>
+                        <li>**Empower Holders:** Extract real value from all NFTs.</li>
+                        <li>**Deflationary:** Continuous burn mechanisms for sustainable CATA.</li>
+                        <li>**Secure by Design:** Establish a new standard with the Decentralized Recovery System (DRS).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tokenomics" class="card highlight-card">
+            <h2>2. Tokenomics (CATA)</h2>
+            <div class="flex-table">
+                <div class="col-1">
+                    <h3>Hard-Coded Supply & Caps</h3>
+                    <ul>
+                        <li>**Max Token Supply:** $\mathbf{1,000,000,000}$ CATA (Hard Cap)</li>
+                        <li>**Global Staking Cap:** $\mathbf{500,000,000}$ NFTs</li>
+                        <li>**Cap Breakdown:** Term ($\mathbf{375M}$) / Permanent ($\mathbf{125M}$)</li>
+                        <li>**Per-Collection Cap:** $\mathbf{20,000}$ NFTs enforced.</li>
+                    </ul>
+                </div>
+                <div class="col-2">
+                    <h3 class="split-title">Immutable Fee Distribution <br/>(Enforced at Contract Level)</h3>
+                    <div class="immutable-split">
+                        <span class="burn-pct">90% BURN</span>
+                        <span class="treasury-pct">9% Treasury</span>
+                        <span class="deployer-pct">1% Deployer</span>
+                    </div>
+                    <p class="immutable-note">This split applies to all fees (registration, harvest, unstake, and escrow forfeitures) and **cannot be modified by governance.**</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tiers" class="card">
+            <h2>3. Collection Tiers & Mechanics</h2>
+            <div class="tier-grid">
+                <div class="tier-box verified">
+                    <h3>Verified (Standard)</h3>
+                    <p>Custodial staking, normal fees, full privileges.</p>
+                </div>
+                <div class="tier-box unverified">
+                    <h3>Unverified (Proof-of-Burn)</h3>
+                    <p>Must pay registration + surcharge escrow. Forfeiture is $\mathbf{90/9/1}$ split. Reduced rights until governance-approved upgrade.</p>
+                </div>
+                <div class="tier-box bluechip">
+                    <h3>Blue-Chip (Non-Custodial)</h3>
+                    <p>Optional non-custodial model. Wallet pays one-time enrollment fee for reward access, avoiding custody risk.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="governance" class="card">
+            <h2>4. Governance & Hardening</h2>
+            <div class="content-split">
+                <div>
+                    <h3>Burn-Weighted Governance (BWCG)</h3>
+                    <ul>
+                        <li>Voting weight scaled by **stake contribution & burn activity**.</li>
+                        <li>`collectionVoteCapPercent` prevents single-collection domination.</li>
+                        <li>Governs proposals for fee changes, reward adjustments, and Council reseeding.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Security Hardening (CRITICAL)</h3>
+                    <p class="warning-box">The generic AccessControl role functions are **DISABLED** in all four contracts and hard-coded to revert:</p>
+                    <ul class="hardening-list">
+                        <li><code>grantRole()</code></li>
+                        <li><code>revokeRole()</code></li>
+                        <li><code>renounceRole()</code></li>
+                    </ul>
+                    <p>Role changes must only happen through the auditable Governance or Guardian Council proposals.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="security" class="card highlight-card">
+            <h2>5. Decentralized Recovery System (DRS)</h2>
+            <div class="drs-grid">
+                <div>
+                    <h3>Batch Guardian Council (BGC)</h3>
+                    <p>Dual-batch (Active/Standby) model with **7 Guardians** each, ensuring decentralized recovery without a central point of failure.</p>
+                </div>
+                <div class="drs-steps">
+                    <h3>Recovery Timelines (Aligned)</h3>
+                    <div class="step">
+                        <span class="step-icon">1.</span>
+                        <p><strong>Approval Threshold:</strong> $\mathbf{5}$ of $\mathbf{7}$ votes required for recovery validity.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">2.</span>
+                        <p><strong>Last Honest Veto:</strong> $\mathbf{6}$ of $\mathbf{7}$ approval grants a **48-hour veto window** to the last honest guardian.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">3.</span>
+                        <p><strong>Mandatory Timelock:</strong> Recovery execution is delayed by a **mandatory 4-hour $\text{EXECUTION\_TIMELOCK}$** for final monitoring.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech-appendix" class="card tech-summary">
+            <h2>🔧 Technical Appendix Summary</h2>
+            <ul>
+                <li>**Architecture:** Modular UUPS Upgradeable contracts.</li>
+                <li>**Core Contracts:** <code>CataERC20Upgradeable</code>, <code>CatalystStakingUpgradeable</code>, <code>CatalystGovernanceUpgradeable</code>, <code>BatchGuardianCouncilUpgradeable</code>.</li>
+                <li>**Security:** ReentrancyGuard, Pausable, Guardian-managed admin swaps.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Catalyst Protocol. R&D-First Mission. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
