@@ -1,155 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalyst Whitepaper | DApp Presentation</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-</head>
-<body>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Catalyst Protocol — DApp</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="assets/logo.png">	
+  <meta name="description" content="Catalyst Protocol dApp — staking, governance, and guardian council" />
+  
+  <style>
+    /* Background + Font */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(ellipse at top, #0a0f1f 0%, #020617 100%);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-    <header>
-        <div class="container">
-            <h1>Catalyst Protocol</h1>
-            <p>Universal Utility & Governance for All NFTs</p>
+    /* Glass styling */
+    .glass {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Buttons */
+    .tabbtn {
+      transition: all 0.25s ease-in-out;
+    }
+    .tabbtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+      opacity: 0.95;
+    }
+    .tab-active {
+      outline: 2px solid #38bdf8;
+      outline-offset: 2px;
+      background: linear-gradient(90deg, #0891b2, #22d3ee);
+      color: black;
+      font-weight: 600;
+    }
+
+    /* Loading Overlay */
+    #loadingIndicator {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(255, 255, 255, 0.2);
+      border-top: 6px solid #facc15;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      box-shadow: 0 0 15px #facc15;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      margin-top: 10px;
+      color: #facc15;
+      font-weight: bold;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Chip styles */
+    .chip {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.8rem;
+      color: #38bdf8;
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Header gradient */
+    header {
+      background: linear-gradient(90deg, #0f172a, #1e293b);
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      padding: 1rem 1.5rem;
+    }
+
+  </style>
+</head>
+
+<!-- Loading Indicator -->
+<div id="loadingIndicator" style="display:none;">
+  <div class="spinner"></div>
+  <div class="loading-text">Loading Catalyst...</div>
+</div> 
+
+<body>
+  <div class="max-w-7xl mx-auto p-6">
+    
+    <!-- Header -->
+    <header class="flex flex-wrap items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="assets/logo.png" class="w-10 h-10 rounded-full shadow" alt="logo" />
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 to-emerald-300 bg-clip-text text-transparent">
+            Catalyst Protocol
+          </h1>
+          <p class="text-xs text-slate-400">Staking · Governance · Guardian Council</p>
         </div>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs">
+        <div class="px-2 py-1 rounded-lg bg-slate-800 border border-slate-700 shadow-sm">
+          <div class="text-slate-400 text-[10px]">Connected</div>
+          <div class="flex items-center gap-1">
+            <span id="addr" class="font-medium text-slate-100 cursor-pointer" title="Not connected">Not connected</span>
+            <button id="copyAddrBtn" class="px-1 py-0.5 text-[10px] bg-slate-700 hover:bg-slate-600 rounded">📋</button>
+          </div>
+        </div>
+
+        <div class="px-2 py-1 rounded-lg bg-slate-800 border border-slate-700 shadow-sm">
+          <div class="text-slate-400 text-[10px]">Network</div>
+          <div id="networkText" class="font-medium text-slate-100">—</div>
+        </div>
+
+        <div class="flex gap-2 ml-2">
+          <button id="connectBtn" class="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-green-400 text-black font-semibold shadow hover:opacity-90">
+            🔌 Connect
+          </button>
+          <button id="disconnectBtn" class="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold shadow hidden hover:bg-red-500">
+            ❌ Disconnect
+          </button>
+        </div>
+      </div>
     </header>
 
-    <main class="container">
-        <nav class="toc">
-            <a href="#intro">1. Intro</a>
-            <a href="#tokenomics">2. Tokenomics</a>
-            <a href="#tiers">3. Collection Tiers</a>
-            <a href="#governance">4. Governance</a>
-            <a href="#security">5. Guardian Council (DRS)</a>
-        </nav>
+    <!-- Tabs -->
+    <div class="mt-6 glass rounded-2xl p-4 flex flex-wrap gap-3 justify-center">
+      <button data-tab="overview" class="tabbtn px-5 py-2.5 rounded-lg bg-gradient-to-r from-sky-700 to-blue-600 text-white tab-active">📖 Overview</button>
+      <button data-tab="quickstatus" class="tabbtn px-5 py-2.5 rounded-lg bg-slate-700">🧭 Quick Status</button>
+      <button data-tab="registration" class="tabbtn px-5 py-2.5 rounded-lg bg-indigo-700">📝 Registration</button>
+      <button data-tab="bluechip" class="tabbtn px-5 py-2.5 rounded-lg bg-amber-600 text-black">💎 Bluechip</button>
+      <button data-tab="staking" class="tabbtn px-5 py-2.5 rounded-lg bg-emerald-700">📦 Staking</button>
+      <button data-tab="governance" class="tabbtn px-5 py-2.5 rounded-lg bg-violet-700">🏛️ Governance</button>
+      <button data-tab="council" class="tabbtn px-5 py-2.5 rounded-lg bg-rose-700">🛡️ Council</button>
+      <button data-tab="whitepaper" class="tabbtn px-5 py-2.5 rounded-lg bg-teal-700">📜 Whitepaper</button>
+    </div>
 
-        <section id="intro" class="card">
-            <h2>1. The Infrastructure Layer</h2>
-            <div class="content-split">
-                <div class="vision">
-                    <h3>Vision</h3>
-                    <p class="quote">"To become the universal utility layer of the NFT ecosystem, where every NFT has value and every collection can contribute to shaping the future of decentralized communities."</p>
-                    <p>Catalyst provides deflationary staking, utility, and governance for **every ERC-721**—blue-chip, indie, or abandoned—solving the fragmentation problem.</p>
-                </div>
-                <div class="mission">
-                    <h3>Core Mission</h3>
-                    <ul>
-                        <li>**Empower Holders:** Extract real value from all NFTs.</li>
-                        <li>**Deflationary:** Continuous burn mechanisms for sustainable CATA.</li>
-                        <li>**Secure by Design:** Establish a new standard with the Decentralized Recovery System (DRS).</li>
-                    </ul>
-                </div>
+    <!-- Tab Content -->
+    <main id="tabContents" class="mt-6 glass rounded-2xl p-6 space-y-6">
+      <section id="overview" class="tab-content">
+        <div class="glass rounded-xl p-6 space-y-4">
+          <h2 class="text-2xl font-semibold">Catalyst at a Glance</h2>
+          <p class="text-slate-300 leading-relaxed text-sm">
+            Catalyst is a modular NFT staking & governance protocol enabling users to stake ERC-721s for CATA rewards,
+            participate in burn-weighted governance, and rely on a secure Guardian Council recovery mechanism.
+          </p>
+
+          <div class="grid md:grid-cols-3 gap-4 mt-4">
+            <div class="card">
+              <div class="text-sm text-slate-400 mb-1">Mission</div>
+              <div class="font-semibold">Non-Profit R&D Utility</div>
+              <p class="text-slate-300 text-sm mt-2 leading-relaxed">
+                Immutable fee split <span class="chip">90% Burn</span> / <span class="chip">9% Treasury</span> / <span class="chip">1% Deployer</span>.
+              </p>
             </div>
-        </section>
-
-        <section id="tokenomics" class="card highlight-card">
-            <h2>2. Tokenomics (CATA)</h2>
-            <div class="flex-table">
-                <div class="col-1">
-                    <h3>Hard-Coded Supply & Caps</h3>
-                    <ul>
-                        <li>**Max Token Supply:** $\mathbf{1,000,000,000}$ CATA (Hard Cap)</li>
-                        <li>**Global Staking Cap:** $\mathbf{500,000,000}$ NFTs</li>
-                        <li>**Cap Breakdown:** Term ($\mathbf{375M}$) / Permanent ($\mathbf{125M}$)</li>
-                        <li>**Per-Collection Cap:** $\mathbf{20,000}$ NFTs enforced.</li>
-                    </ul>
-                </div>
-                <div class="col-2">
-                    <h3 class="split-title">Immutable Fee Distribution <br/>(Enforced at Contract Level)</h3>
-                    <div class="immutable-split">
-                        <span class="burn-pct">90% BURN</span>
-                        <span class="treasury-pct">9% Treasury</span>
-                        <span class="deployer-pct">1% Deployer</span>
-                    </div>
-                    <p class="immutable-note">This split applies to all fees (registration, harvest, unstake, and escrow forfeitures) and **cannot be modified by governance.**</p>
-                </div>
+            <div class="card">
+              <div class="text-sm text-slate-400 mb-1">Usage</div>
+              <ol class="list-decimal ml-5 text-slate-300 text-sm leading-relaxed space-y-1">
+                <li>Locate and save your proxy contract address.</li>
+                <li>Connect your wallet to stake and govern.</li>
+                <li>Use tabs to stake NFTs, vote, claim rewards, and manage council actions.</li>
+              </ol>
             </div>
-        </section>
-
-        <section id="tiers" class="card">
-            <h2>3. Collection Tiers & Mechanics</h2>
-            <div class="tier-grid">
-                <div class="tier-box verified">
-                    <h3>Verified (Standard)</h3>
-                    <p>Custodial staking, normal fees, full privileges.</p>
-                </div>
-                <div class="tier-box unverified">
-                    <h3>Unverified (Proof-of-Burn)</h3>
-                    <p>Must pay registration + surcharge escrow. Forfeiture is $\mathbf{90/9/1}$ split. Reduced rights until governance-approved upgrade.</p>
-                </div>
-                <div class="tier-box bluechip">
-                    <h3>Blue-Chip (Non-Custodial)</h3>
-                    <p>Optional non-custodial model. Wallet pays one-time enrollment fee for reward access, avoiding custody risk.</p>
-                </div>
+            <div class="card">
+              <div class="text-sm text-slate-400 mb-1">Docs</div>
+              <p class="text-slate-300 text-sm">
+                View the <a href="#" onclick="selectTab('whitepaper')" class="text-sky-400 underline hover:text-sky-300">Whitepaper summary</a>
+                or <a href="#" onclick="selectTab('appendix')" class="text-sky-400 underline hover:text-sky-300">Technical Appendix</a>.
+              </p>
             </div>
-        </section>
-        
-        <section id="governance" class="card">
-            <h2>4. Governance & Hardening</h2>
-            <div class="content-split">
-                <div>
-                    <h3>Burn-Weighted Governance (BWCG)</h3>
-                    <ul>
-                        <li>Voting weight scaled by **stake contribution & burn activity**.</li>
-                        <li>`collectionVoteCapPercent` prevents single-collection domination.</li>
-                        <li>Governs proposals for fee changes, reward adjustments, and Council reseeding.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Security Hardening (CRITICAL)</h3>
-                    <p class="warning-box">The generic AccessControl role functions are **DISABLED** in all four contracts and hard-coded to revert:</p>
-                    <ul class="hardening-list">
-                        <li><code>grantRole()</code></li>
-                        <li><code>revokeRole()</code></li>
-                        <li><code>renounceRole()</code></li>
-                    </ul>
-                    <p>Role changes must only happen through the auditable Governance or Guardian Council proposals.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="security" class="card highlight-card">
-            <h2>5. Decentralized Recovery System (DRS)</h2>
-            <div class="drs-grid">
-                <div>
-                    <h3>Batch Guardian Council (BGC)</h3>
-                    <p>Dual-batch (Active/Standby) model with **7 Guardians** each, ensuring decentralized recovery without a central point of failure.</p>
-                </div>
-                <div class="drs-steps">
-                    <h3>Recovery Timelines (Aligned)</h3>
-                    <div class="step">
-                        <span class="step-icon">1.</span>
-                        <p><strong>Approval Threshold:</strong> $\mathbf{5}$ of $\mathbf{7}$ votes required for recovery validity.</p>
-                    </div>
-                    <div class="step">
-                        <span class="step-icon">2.</span>
-                        <p><strong>Last Honest Veto:</strong> $\mathbf{6}$ of $\mathbf{7}$ approval grants a **48-hour veto window** to the last honest guardian.</p>
-                    </div>
-                    <div class="step">
-                        <span class="step-icon">3.</span>
-                        <p><strong>Mandatory Timelock:</strong> Recovery execution is delayed by a **mandatory 4-hour $\text{EXECUTION\_TIMELOCK}$** for final monitoring.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="tech-appendix" class="card tech-summary">
-            <h2>🔧 Technical Appendix Summary</h2>
-            <ul>
-                <li>**Architecture:** Modular UUPS Upgradeable contracts.</li>
-                <li>**Core Contracts:** <code>CataERC20Upgradeable</code>, <code>CatalystStakingUpgradeable</code>, <code>CatalystGovernanceUpgradeable</code>, <code>BatchGuardianCouncilUpgradeable</code>.</li>
-                <li>**Security:** ReentrancyGuard, Pausable, Guardian-managed admin swaps.</li>
-            </ul>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; Catalyst Protocol. R&D-First Mission. All Rights Reserved.</p>
+          </div>
         </div>
-    </footer>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
